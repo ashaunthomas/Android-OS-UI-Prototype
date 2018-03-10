@@ -6,7 +6,7 @@ int s, lastSecond;
 EnergyBar energy;
 AppColumn[] columns = new AppColumn[4];
 AppColumnLabel[] columnLabels = new AppColumnLabel[4];
-
+String[] messages = {"Tools","Fun","Life","Misc"};
 float tempX;
 void setup() {
  size(960,540);
@@ -23,6 +23,7 @@ void setup() {
     tempX += columns[i].getWidth();
     
     columnLabels[i] = new AppColumnLabel(columns[i]);
+    columnLabels[i].setMessage(messages[i]);
  }
 }
 
@@ -200,7 +201,7 @@ class AppColumnLabel {
      fill(#F7F7DE);
      rect(this.x,this.y,this.w,this.h);
      fill(0);
-     text(this.message,this.x + 20,this.y + 12);
+     text(this.message,this.x + 16,this.y + 12);
    }  
    
    void setMessage(String msg) {

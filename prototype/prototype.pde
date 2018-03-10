@@ -9,7 +9,12 @@ AppColumnLabel[] columnLabels = new AppColumnLabel[4];
 Button[] buttons = new Button[3];
 String[] messages = {"Tools","Fun","Life","Misc"};
 float tempX, tempX2;
-
+App[] a1 = new App[4];
+App[] a2 = new App[4];
+App[] a3 = new App[4];
+App[] a4 = new App[4];
+float app_temp_x;
+float app_temp_y;
 
 void setup() {
  size(960,540);
@@ -19,14 +24,34 @@ void setup() {
  screen = new Screen(375,90);
  energy = new EnergyBar(screen);
  tempX = screen.getX();
- tempX2 = screen.getX();
+ tempX2 = tempX;
+ app_temp_x = tempX;
+ app_temp_y = 50;
  for (int i = 0; i < columns.length; i++) {
     columns[i] = new AppColumn(screen,tempX);
     columns[i].setColor(i);
     tempX += columns[i].getWidth();
-    
     columnLabels[i] = new AppColumnLabel(columns[i]);
     columnLabels[i].setMessage(messages[i]);
+    
+    for (int j = 0; j < columns.length; j++) {
+      if (i == 0) {
+        a1[j] = new App(columns[i], app_temp_x + columns[i].getWidth()/8, app_temp_y + columns[i].getY());  
+        app_temp_y+=70;
+      }
+      else if (i == 1) {
+        app_temp_y = 50;
+        a2[j] = new App(columns[i], app_temp_x + columns[i].getWidth()/8, app_temp_y + columns[i].getY());  
+        app_temp_y+=70;
+      }
+      else if (i == 2) {
+        
+      }
+      
+      else if (i == 3) {
+        
+      }
+    }
     
     if (i < 3) {
      buttons[i] = new Button(screen,tempX2);  
@@ -159,10 +184,12 @@ class AppColumn { //takes up 90% of screen
 class App {
    float x,y,h,w;
    AppColumn column;
-   App(AppColumn parentColumn, int x,int y) {
+   App(AppColumn parentColumn, float x,float y) {
      this.column = parentColumn;
      this.x = x;
      this.y = y;
+     this.h = 40;
+     this.w = 40;
    }
    
    void paint() {
@@ -221,10 +248,27 @@ class Button {
      return this.w; 
   }
   
+  float getX() { return this.x; }
+  float getY() { return this.y; }
+  
   void paint() {
-    fill(#ff0000);
+    fill(#B7BFB0);
     rect(this.x,this.y,this.w,this.h);
   }
+}
+
+class ButtonIcon {
+  PImage icon;
+  Button parent;
+  ButtonIcon(Button p, PImage i) {
+    this.parent = p; 
+    this.icon = i;
+  }
+  
+  void paint() {
+    image(this.icon,parent.getX() + parent.getWidth()/2,0);
+  }
+  
 }
 
 class AppColumnLabel {
@@ -316,6 +360,10 @@ void home() {
   for (int i = 0; i < columns.length; i++) {
     columns[i].paint(); 
     columnLabels[i].paint();
+    a1[i].paint();
+    a2[i].paint();
+    //a3[i].paint();
+    //a4[i].paint();
     if (i < 3) {
        buttons[i].paint(); 
     }

@@ -1,21 +1,23 @@
-int screen = 0;
+int page = 0;
 PFont f_title;
 PFont f_input;
 PImage phone;
-
+Screen screen;
 void setup() {
- size(800,600);
+ size(960,540);
  f_title = createFont("Ariel",60,true);
  f_input = createFont("Ariel",20,true);
- 
+ phone = loadImage("phone.png");
+ screen = new Screen(375,90);
 }
 
 
 void draw() {
   background(51);
-  textFont(f_title);
   fill(255); //black
-  switch (screen) {
+  image(phone,0,0);
+  screen.paint();
+  switch (page) {
     case 0: //login
       home();
       break;
@@ -36,25 +38,21 @@ void draw() {
   }
 }
 
-class InputField {
+class Screen {
    int x,y;
    PFont font;
    String msg = "9";
    boolean isPassword;
-   int w = 300;
-   int h = 50;
-   InputField(int x,int y,PFont font,String msg,boolean isPassword) {
+   int w = 209;
+   int h = 350;
+   Screen(int x,int y) {
      this.x = x;
      this.y = y;
-     this.font = font;
-     this.msg = msg;
-     this.isPassword = isPassword;
    }
    
    void paint() {
      fill(255);
      rect(this.x,this.y,this.w,this.h);
-     text(msg,this.x+10,this.y);
      
    }
    
@@ -64,7 +62,82 @@ class InputField {
 }
 
 
+class AppColumn {
+   int x,y;
+   int w = 209;
+   int h = 350;
+   AppColumn(int x,int y) {
+     this.x = x;
+     this.y = y;
+   }
+   
+   void paint() {
+     fill(255);
+     rect(this.x,this.y,this.w,this.h);
+     
+   }
+   
+}
+
+class App {
+   int x,y;
+   int counter;
+   int w = 209;
+   int h = 350;
+   App(int x,int y) {
+     this.x = x;
+     this.y = y;
+   }
+   
+   void paint() {
+     fill(255);
+     rect(this.x,this.y,this.w,this.h);
+     
+   }
+   
+}
+
+class AppLabel {
+   App parent;
+   int x;
+   int y;
+   int w = 209;
+   int h = 350;
+   AppLabel() {
+     
+     
+   }
+
+   void paint() {
+     fill(255);
+     rect(this.x,this.y,this.w,this.h);
+     
+   }  
+}
+
+class AppColumnLabel {
+   App parent;
+   int x;
+   int y;
+   int w = 209;
+   int h = 350;
+   AppColumnLabel() {
+     
+     
+   }
+
+   void paint() {
+     fill(255);
+     rect(this.x,this.y,this.w,this.h);
+     
+   }  
+}
+
+
+
+
+
 void home() {
-  InputField pinInput = new InputField(250,300,f_input,"",true);
-  pinInput.paint();
+  //InputField pinInput = new InputField(250,300,f_input,"",true);
+   //pinInput.paint();
 }

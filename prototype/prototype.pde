@@ -35,20 +35,18 @@ void draw() {
   screen.paint();
   energy.paint();
   switch (page) {
-    case 0: //login
+    case 0: 
       home();
       break;
-    case 1: //home
+    case 1: 
+      call();
+    case 2: 
       break;
-    case 2: //withdraw
+    case 3: 
+      wifi();
       break;
-    case 3: //large withdraw confirmation
-      break;
-    case 4: //deposit
-      break;
-    case 5: //deposit confirmation
-      break;
-    case 6: //logout confirmation
+    case 4: 
+      message();
       break;
     default:
       println("Default triggered...");
@@ -57,7 +55,6 @@ void draw() {
   //timed events
   s = second();
   if (s != lastSecond) {
-    println("A second elapsed");
     energy.decrease();
     lastSecond = s;
   }
@@ -162,7 +159,6 @@ class App {
    void paint() {
      fill(#ff0000);
      rect(this.x,this.y,this.w,this.h);
-     
    }
    
 }
@@ -276,3 +272,9 @@ void home() {
     columnLabels[i].paint();
   }
 }
+
+void call() {}
+
+void wifi() {}
+
+void message() {}

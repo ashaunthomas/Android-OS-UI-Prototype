@@ -3,12 +3,16 @@ PFont f_title;
 PFont f_input;
 PImage phone;
 Screen screen;
+int s, lastSecond;
+EnergyBar energy;
 void setup() {
  size(960,540);
  f_title = createFont("Ariel",60,true);
  f_input = createFont("Ariel",20,true);
  phone = loadImage("phone.png");
  screen = new Screen(375,90);
+ energy = new EnergyBar(screen);
+ 
 }
 
 
@@ -17,6 +21,7 @@ void draw() {
   fill(255); //black
   image(phone,0,0);
   screen.paint();
+  energy.paint();
   switch (page) {
     case 0: //login
       home();
@@ -35,6 +40,14 @@ void draw() {
       break;
     default:
       println("Default triggered...");
+  }
+  
+  //timed events
+  s = second();
+  if (s != lastSecond) {
+    println("A second elapsed");
+    energy.decrease();
+    lastSecond = s;
   }
 }
 
@@ -56,6 +69,22 @@ class Screen {
      
    }
    
+   int getWidth() { 
+     return this.w; 
+   }
+   
+   int getHeight() {
+     return this.h; 
+   }
+   
+   int getX() {
+    return this.x; 
+   }
+   
+   int getY() {
+    return this.y; 
+   }
+   
    void setMessage(String msg) {
     this.msg = msg; 
    }
@@ -63,9 +92,7 @@ class Screen {
 
 
 class AppColumn {
-   int x,y;
-   int w = 209;
-   int h = 350;
+   int x,y,w,h;
    AppColumn(int x,int y) {
      this.x = x;
      this.y = y;
@@ -133,6 +160,63 @@ class AppColumnLabel {
    }  
 }
 
+class EnergyBar {
+   int x,y,maxWidth;
+   float h, w;
+   color[] settings = { #A5E9CD, #E7D0A8, #E7645B };
+   color currentColor = 255;
+   Screen parentScreen;
+   EnergyBar(Screen screen) {
+     this.parentScreen = screen;
+     this.maxWidth = screen.getWidth(); 
+     this.x = screen.getX();
+     this.y = screen.getY();
+     this.h = screen.getHeight() - (screen.getHeight() * 0.95);
+     this.w = this.maxWidth;
+   }
+
+   void paint() {
+     if (this.w > (parentScreen.getWidth() * 0.6)) {
+      this.setColor("HIGH"); 
+     }
+     else if (this.w < (parentScreen.getWidth() * 0.6) && this.w > parentScreen.getWidth() * 0.3) {
+      this.setColor("MEDIUM"); 
+     }
+     else {
+      this.setColor("LOW"); 
+     }
+     fill(this.currentColor);
+     rect(this.x,this.y,this.w,this.h);
+     
+   }
+   
+   void decrease() {
+     if (this.w > 0) {
+       this.w-=10;
+     }
+     else {
+      println("Battery drained"); 
+     }
+   }
+   
+   void setColor(String setting) {
+     switch (setting) {
+      case "HIGH":
+        this.currentColor = settings[0];
+        break;
+      case "MEDIUM":
+        this.currentColor = settings[1];
+        break;
+      case "LOW":
+        this.currentColor = settings[2];
+        break;
+      default:
+        println("ERROR IN SETCOLOR -- BAD INPUT");  
+        break;
+     }
+   }
+   
+}
 
 
 

@@ -5,14 +5,22 @@ PImage phone;
 Screen screen;
 int s, lastSecond;
 EnergyBar energy;
+AppColumn[] columns = new AppColumn[4];
+float tempX;
 void setup() {
  size(960,540);
  f_title = createFont("Ariel",60,true);
  f_input = createFont("Ariel",20,true);
+ 
  phone = loadImage("phone.png");
  screen = new Screen(375,90);
  energy = new EnergyBar(screen);
  
+ tempX = screen.getX();
+ for (int i = 0; i < columns.length; i++) {
+    columns[i] = new AppColumn(screen,tempX);
+    tempX += columns[i].getWidth();
+ }
 }
 
 
@@ -22,6 +30,9 @@ void draw() {
   image(phone,0,0);
   screen.paint();
   energy.paint();
+  for (int i = 0; i < columns.length; i++) {
+    columns[i].paint(); 
+  }
   switch (page) {
     case 0: //login
       home();
@@ -92,16 +103,23 @@ class Screen {
 
 
 class AppColumn {
-   int x,y,w,h;
-   AppColumn(int x,int y) {
+   float x,y,w,h;
+   Screen parentScreen;
+   AppColumn(Screen parentScreen,float x) {
+     this.y = parentScreen.getY() + (screen.getHeight() - (screen.getHeight() * 0.98));
+     this.w = parentScreen.getWidth() / 4;
+     this.h = screen.getHeight() - screen.getHeight()* 0.10;
      this.x = x;
-     this.y = y;
    }
    
    void paint() {
-     fill(255);
+     fill(#ff0000);
      rect(this.x,this.y,this.w,this.h);
      
+   }
+   
+   float getWidth() {
+     return this.w;
    }
    
 }

@@ -6,8 +6,11 @@ int s, lastSecond;
 EnergyBar energy;
 AppColumn[] columns = new AppColumn[4];
 AppColumnLabel[] columnLabels = new AppColumnLabel[4];
+Button[] buttons = new Button[3];
 String[] messages = {"Tools","Fun","Life","Misc"};
-float tempX;
+float tempX, tempX2;
+
+
 void setup() {
  size(960,540);
  basicFont = createFont("Ariel",20,true);
@@ -15,8 +18,8 @@ void setup() {
  phone = loadImage("phone.png");
  screen = new Screen(375,90);
  energy = new EnergyBar(screen);
- 
  tempX = screen.getX();
+ tempX2 = screen.getX();
  for (int i = 0; i < columns.length; i++) {
     columns[i] = new AppColumn(screen,tempX);
     columns[i].setColor(i);
@@ -24,7 +27,13 @@ void setup() {
     
     columnLabels[i] = new AppColumnLabel(columns[i]);
     columnLabels[i].setMessage(messages[i]);
+    
+    if (i < 3) {
+     buttons[i] = new Button(screen,tempX2);  
+     tempX2 += buttons[i].getWidth()+0.5; //offset for some reason?
+    }
  }
+
 }
 
 
@@ -100,7 +109,7 @@ class Screen {
 }
 
 
-class AppColumn {
+class AppColumn { //takes up 90% of screen
    float x,y,w,h;
    Screen parentScreen;
    color c;
@@ -181,6 +190,43 @@ class AppLabel {
    }  
 }
 
+class Button {
+  float x,y,h,w;
+  Screen parentScreen;
+   Button(Screen s, float x) {
+     this.parentScreen = s;
+     this.x = x;
+     this.w = parentScreen.getWidth() / 3;
+     this.y = s.getY() + (s.getHeight() - (s.getHeight() * 0.98)) + s.getHeight() - s.getHeight()* 0.10;
+     this.h =parentScreen.getHeight() - parentScreen.getHeight()*0.92;
+   }
+   
+   void setY(float y) {
+      this.y = y; 
+   }
+   
+  void setX(float x) {
+     this.x = x; 
+  }
+  
+  void setWidth(float w) {
+     this.w = w; 
+  }
+  
+  void setHeight(float h) {
+     this.h = h; 
+  }
+  
+  float getWidth() {
+     return this.w; 
+  }
+  
+  void paint() {
+    fill(#ff0000);
+    rect(this.x,this.y,this.w,this.h);
+  }
+}
+
 class AppColumnLabel {
    float x,y,w,h;
    String message = "title";
@@ -205,7 +251,7 @@ class AppColumnLabel {
    }
 }
 
-class EnergyBar {
+class EnergyBar { //takes up 2% of screen 
    int x,y,maxWidth;
    float h, w;
    color[] settings = { #A5E9CD, #E7D0A8, #E7645B };
@@ -270,6 +316,9 @@ void home() {
   for (int i = 0; i < columns.length; i++) {
     columns[i].paint(); 
     columnLabels[i].paint();
+    if (i < 3) {
+       buttons[i].paint(); 
+    }
   }
 }
 

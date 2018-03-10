@@ -171,7 +171,7 @@ class EnergyBar {
      this.maxWidth = screen.getWidth(); 
      this.x = screen.getX();
      this.y = screen.getY();
-     this.h = screen.getHeight() - (screen.getHeight() * 0.95);
+     this.h = screen.getHeight() - (screen.getHeight() * 0.98);
      this.w = this.maxWidth;
    }
 
@@ -192,7 +192,7 @@ class EnergyBar {
    
    void decrease() {
      if (this.w > 0) {
-       this.w-=10;
+       this.w-=0.2;
      }
      else {
       println("Battery drained"); 

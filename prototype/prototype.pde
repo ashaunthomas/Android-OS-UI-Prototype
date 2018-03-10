@@ -1,6 +1,5 @@
 int page = 0;
-PFont f_title;
-PFont f_input;
+PFont basicFont;
 PImage phone;
 Screen screen;
 int s, lastSecond;
@@ -11,8 +10,7 @@ AppColumnLabel[] columnLabels = new AppColumnLabel[4];
 float tempX;
 void setup() {
  size(960,540);
- f_title = createFont("Ariel",60,true);
- f_input = createFont("Ariel",20,true);
+ basicFont = createFont("Ariel",20,true);
  
  phone = loadImage("phone.png");
  screen = new Screen(375,90);
@@ -188,6 +186,7 @@ class AppLabel {
 
 class AppColumnLabel {
    float x,y,w,h;
+   String message = "title";
    AppColumn parent;
    AppColumnLabel(AppColumn column) {
     this.parent = column;
@@ -198,10 +197,15 @@ class AppColumnLabel {
    }
 
    void paint() {
-     fill(#ff0000);
+     fill(#F7F7DE);
      rect(this.x,this.y,this.w,this.h);
-     
+     fill(0);
+     text(this.message,this.x + 20,this.y + 12);
    }  
+   
+   void setMessage(String msg) {
+     this.message = msg;
+   }
 }
 
 class EnergyBar {

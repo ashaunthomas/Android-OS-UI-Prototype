@@ -6,6 +6,8 @@ Screen screen;
 int s, lastSecond;
 EnergyBar energy;
 AppColumn[] columns = new AppColumn[4];
+AppColumnLabel[] columnLabels = new AppColumnLabel[4];
+
 float tempX;
 void setup() {
  size(960,540);
@@ -21,6 +23,8 @@ void setup() {
     columns[i] = new AppColumn(screen,tempX);
     columns[i].setColor(i);
     tempX += columns[i].getWidth();
+    
+    columnLabels[i] = new AppColumnLabel(columns[i]);
  }
 }
 
@@ -105,12 +109,14 @@ class AppColumn {
    Screen parentScreen;
    color c;
    color[] colors = {#926750, #F4F1BA, #CB8E84, #EECB93};
+   float appY;
    
    AppColumn(Screen parentScreen,float x) {
      this.y = parentScreen.getY() + (screen.getHeight() - (screen.getHeight() * 0.98));
      this.w = parentScreen.getWidth() / 4;
      this.h = screen.getHeight() - screen.getHeight()* 0.10;
      this.x = x;
+     //this.appY = 
    }
    
    void paint() {
@@ -122,23 +128,37 @@ class AppColumn {
      return this.w;
    }
    
+   float getX() {
+    return this.x; 
+   }
+   
+   float getY() {
+    return this.y; 
+   }
+   
+   float getHeight() {
+    return this.h; 
+   }
+   
    void setColor(int colorNum) {
     this.c = colors[colorNum];
+   }
+   
+   float currentAppY() {
+     float temp = 0;
+     return temp;
    }
    
 }
 
 class App {
-   int x,y;
-   int w = 209;
-   int h = 350;
+   float x,y,h,w;
    AppColumn column;
    App(AppColumn parentColumn, int x,int y) {
      this.column = parentColumn;
      this.x = x;
      this.y = y;
    }
-   
    
    void paint() {
      fill(#ff0000);
@@ -167,18 +187,18 @@ class AppLabel {
 }
 
 class AppColumnLabel {
-   App parent;
-   int x;
-   int y;
-   int w = 209;
-   int h = 350;
-   AppColumnLabel() {
-     
-     
+   float x,y,w,h;
+   AppColumn parent;
+   AppColumnLabel(AppColumn column) {
+    this.parent = column;
+    this.x = column.getX();
+    this.y = column.getY();
+    this.w = column.getWidth();
+    this.h = column.getHeight() - (column.getHeight() * 0.95);
    }
 
    void paint() {
-     fill(255);
+     fill(#ff0000);
      rect(this.x,this.y,this.w,this.h);
      
    }  
@@ -248,5 +268,6 @@ class EnergyBar {
 void home() {
   for (int i = 0; i < columns.length; i++) {
     columns[i].paint(); 
+    columnLabels[i].paint();
   }
 }

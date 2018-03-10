@@ -19,6 +19,7 @@ void setup() {
  tempX = screen.getX();
  for (int i = 0; i < columns.length; i++) {
     columns[i] = new AppColumn(screen,tempX);
+    columns[i].setColor(i);
     tempX += columns[i].getWidth();
  }
 }
@@ -30,9 +31,6 @@ void draw() {
   image(phone,0,0);
   screen.paint();
   energy.paint();
-  for (int i = 0; i < columns.length; i++) {
-    columns[i].paint(); 
-  }
   switch (page) {
     case 0: //login
       home();
@@ -105,6 +103,9 @@ class Screen {
 class AppColumn {
    float x,y,w,h;
    Screen parentScreen;
+   color c;
+   color[] colors = {#926750, #F4F1BA, #CB8E84, #EECB93};
+   
    AppColumn(Screen parentScreen,float x) {
      this.y = parentScreen.getY() + (screen.getHeight() - (screen.getHeight() * 0.98));
      this.w = parentScreen.getWidth() / 4;
@@ -113,29 +114,34 @@ class AppColumn {
    }
    
    void paint() {
-     fill(#ff0000);
+     fill(this.c);
      rect(this.x,this.y,this.w,this.h);
-     
    }
    
    float getWidth() {
      return this.w;
    }
    
+   void setColor(int colorNum) {
+    this.c = colors[colorNum];
+   }
+   
 }
 
 class App {
    int x,y;
-   int counter;
    int w = 209;
    int h = 350;
-   App(int x,int y) {
+   AppColumn column;
+   App(AppColumn parentColumn, int x,int y) {
+     this.column = parentColumn;
      this.x = x;
      this.y = y;
    }
    
+   
    void paint() {
-     fill(255);
+     fill(#ff0000);
      rect(this.x,this.y,this.w,this.h);
      
    }
@@ -240,6 +246,7 @@ class EnergyBar {
 
 
 void home() {
-  //InputField pinInput = new InputField(250,300,f_input,"",true);
-   //pinInput.paint();
+  for (int i = 0; i < columns.length; i++) {
+    columns[i].paint(); 
+  }
 }
